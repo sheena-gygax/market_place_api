@@ -18,4 +18,9 @@ RSpec.configure do |config|
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
   config.include Request::JsonHelpers, type: :controller
+  config.include Request::HeadersHelpers, type: :controller
+
+  config.before(:each, type: :controller) do
+    include_default_accept_headers
+  end
 end
