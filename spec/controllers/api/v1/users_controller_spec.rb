@@ -52,4 +52,39 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         it { should respond_with 422 }
     end
   end
+  
+  describe "PUT/PATCH #update" do
+    context "when is successfully updated" do 
+      before(:each) do
+        @user = FactoryGirl.create :user
+        patch :update, params:  { id: @user.id,
+                         user: { email: "firepower@email.com" } }, format:  :json
+      end
+
+      it "renders the json representation for the updated user" do
+        user_response = JSON.parse(response.body, symbolize_names: true)
+        expect(user_response[:email]).to eql "firepower@email.com"
+      end
+
+      it { should respond_with 200 }
+    end
+
+    context "when its not created" do 
+      before(:each) do 
+        @user = FactoryGirl.create :user
+        patch :update, params: { id: @user.id,
+                                user: { email: "illynilly.com" } }, format: :json
+      end
+
+      it "renders json errors" do
+        user_response = JSON.parse(response.body, symbolize_names: true)
+        expect(user_response).to have_key(:errors)
+      end
+
+      it "renders json error explaination of why user isn't created" do 
+        user_response = JSON.parse(response.body, symbolize_names: true)
+        expect(user_response[:errors][:email]).to include "is invalid"
+      end
+    end
+  end
 end
