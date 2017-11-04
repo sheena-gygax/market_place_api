@@ -14,6 +14,10 @@ gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem "devise"
 gem 'coffee-rails', '~> 4.2'
+gem 'compass-rails', github: 'Compass/compass-rails'
+gem 'furatto', git: 'git@github.com:IcaliaLabs/furatto-rails.git'
+gem 'font-awesome-rails'
+gem 'simple_form'
 
 group :test do
    gem "rspec-rails"
