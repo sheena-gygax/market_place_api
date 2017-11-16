@@ -28,6 +28,9 @@ end
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'binding_of_caller'
+  gem 'pry'
+  gem 'better_errors'
 end
 
 group :development do
