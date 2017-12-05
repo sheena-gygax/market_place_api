@@ -24,7 +24,4 @@ Shoulda::Matchers.configure do |config|
     with.library :action_controller
     with.library :rails
   end
-  config.mock_with :rspec do |mocks|
-    mocks.syntax = :should
-  end
 end
