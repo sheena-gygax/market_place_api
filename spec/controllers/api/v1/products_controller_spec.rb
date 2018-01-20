@@ -11,7 +11,7 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
       product_response = json_response
       expect(product_response[:title]).to eq(@product.title)
     end
-    
+
     it { should respond_with 200 }
   end
 
@@ -51,7 +51,7 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
         api_authorization_header user.auth_token
         post :create, params: { user_id: user.id, product: @invalid_product_attributes } 
       end
-      
+
       it "renders json error response" do
         product_response = json_response
         product_response.has_key?(:errors)
@@ -63,6 +63,39 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
       end
 
       it { should respond_with 422 }
+    end
+  end
+  
+  describe "PUT/PATCH #update" do
+    before(:each) do
+      @user = FactoryGirl.create :user
+      @product = FactoryGirl.create :product, user: @user
+      api_authorization_header @user.auth_token
+    end
+
+    context "when successfully updated" do
+      before(:each) do
+        patch :update, params: { user_id: @user.id, id: @product.id, product:{ title: "An Expensive tv" }}
+      end
+
+      it "renders user json" do
+        product_response = json_response
+        expect(product_response[:title]).to eq "An Expensive tv"
+      end
+
+      it { should respond_with 200 }
+    end
+
+    context "when not updated" do
+      before(:each) do
+        patch :update, params: { user_id: @user.id, id: @product.id,
+               product: { price: "two hundred" } }
+      end
+
+      it "renders json errors" do
+        product_response = json_response
+        expect(product_response).to have_key(:errors)
+      end
     end
   end
 end
